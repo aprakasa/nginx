@@ -1,4 +1,4 @@
-FROM alpine:latest AS builder
+FROM alpine:3.23 AS builder
 
 ARG NGINX_VERSION=1.28.3
 ARG TARGETARCH
@@ -102,9 +102,11 @@ RUN cd nginx && \
     && make -j$(nproc) \
     && strip --strip-unneeded objs/nginx
 
-FROM alpine:latest
+FROM alpine:3.23
 
-RUN apk add --no-cache pcre2 brotli openssl zlib libbsd tzdata
+RUN apk add --no-cache pcre2 brotli openssl zlib libbsd tzdata \
+    && addgroup -S nginx \
+    && adduser -S -D -H -G nginx -h /var/cache/nginx -s /sbin/nologin nginx
 
 COPY --from=builder /usr/local/src/nginx/objs/nginx /usr/sbin/nginx
 COPY --from=builder /usr/local/src/nginx/conf/mime.types /etc/nginx/mime.types
@@ -113,12 +115,15 @@ COPY --from=builder /usr/local/src/nginx/conf/scgi_params /etc/nginx/scgi_params
 COPY --from=builder /usr/local/src/nginx/conf/uwsgi_params /etc/nginx/uwsgi_params
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN mkdir -p /var/lib/nginx/{body,fastcgi,proxy,scgi,uwsgi} \
     && mkdir -p /var/log/nginx \
     && mkdir -p /var/cache/nginx \
     && mkdir -p /usr/share/nginx/html \
-    && echo '<!DOCTYPE html><html><head><title>Welcome</title></head><body><h1>Welcome to nginx!</h1></body></html>' > /usr/share/nginx/html/index.html
+    && echo '<!DOCTYPE html><html><head><title>Welcome</title></head><body><h1>Welcome to nginx!</h1></body></html>' > /usr/share/nginx/html/index.html \
+    && chown -R nginx:nginx /var/cache/nginx /var/log/nginx /var/lib/nginx /usr/share/nginx/html \
+    && chmod +x /docker-entrypoint.sh
 
 EXPOSE 80/tcp 443/tcp 443/udp
 
@@ -127,4 +132,5 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 
 STOPSIGNAL SIGQUIT
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
