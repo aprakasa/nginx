@@ -167,7 +167,8 @@ COPY --from=builder /usr/local/src/nginx/conf/uwsgi_params /etc/nginx/uwsgi_para
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
 
-RUN mkdir -p /etc/nginx/conf.d
+RUN mkdir -p /etc/nginx/conf.d \
+    && mkdir -p /docker-entrypoint.d
 
 RUN mkdir -p /var/lib/nginx/{body,fastcgi,proxy,scgi,uwsgi} \
     && mkdir -p /var/log/nginx \
