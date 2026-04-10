@@ -165,15 +165,14 @@ COPY --from=builder /usr/local/src/nginx/conf/scgi_params /etc/nginx/scgi_params
 COPY --from=builder /usr/local/src/nginx/conf/uwsgi_params /etc/nginx/uwsgi_params
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN mkdir -p /var/lib/nginx/{body,fastcgi,proxy,scgi,uwsgi} \
     && mkdir -p /var/log/nginx \
     && mkdir -p /var/cache/nginx \
     && mkdir -p /usr/share/nginx/html \
     && echo '<!DOCTYPE html><html><head><title>Welcome</title></head><body><h1>Welcome to nginx!</h1></body></html>' > /usr/share/nginx/html/index.html \
-    && chown -R nginx:nginx /var/cache/nginx /var/log/nginx /var/lib/nginx /usr/share/nginx/html \
-    && chmod +x /docker-entrypoint.sh
+    && chown -R nginx:nginx /var/cache/nginx /var/log/nginx /var/lib/nginx /usr/share/nginx/html
 
 EXPOSE 80/tcp 443/tcp 443/udp
 
