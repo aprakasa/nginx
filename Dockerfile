@@ -179,7 +179,7 @@ RUN mkdir -p /var/lib/nginx/{body,fastcgi,proxy,scgi,uwsgi} \
 EXPOSE 80/tcp 443/tcp 443/udp
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget -qO- http://localhost/ || exit 1
+    CMD wget -qO- http://localhost/nginx-health || exit 1
 
 STOPSIGNAL SIGQUIT
 
