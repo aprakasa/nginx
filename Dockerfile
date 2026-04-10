@@ -23,20 +23,59 @@ RUN curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.t
     && tar xzf nginx.tar.gz \
     && mv nginx-${NGINX_VERSION} nginx
 
-RUN git clone --depth=1 https://github.com/google/ngx_brotli.git \
-    && cd ngx_brotli && git submodule update --init && cd .. \
-    && git clone --depth=1 https://github.com/nginx-modules/ngx_cache_purge.git \
-    && git clone --depth=1 https://github.com/openresty/headers-more-nginx-module.git \
-    && git clone --depth=1 https://github.com/openresty/echo-nginx-module.git \
-    && git clone --depth=1 https://github.com/simpl/ngx_devel_kit.git \
-    && git clone --depth=1 https://github.com/openresty/set-misc-nginx-module.git \
-    && git clone --depth=1 https://github.com/openresty/memc-nginx-module.git \
-    && git clone --depth=1 https://github.com/openresty/redis2-nginx-module.git \
-    && git clone --depth=1 https://github.com/openresty/srcache-nginx-module.git \
-    && git clone --depth=1 https://github.com/centminmod/ngx_http_redis.git \
-    && git clone --depth=1 https://github.com/yaoweibin/ngx_http_substitutions_filter_module.git \
-    && git clone --depth=1 https://github.com/vozlt/nginx-module-vts.git \
-    && git clone --depth=1 https://github.com/masonicboom/ipscrub.git ipscrubtmp
+RUN git clone --branch v1.0.0rc --depth=1 https://github.com/google/ngx_brotli.git \
+    && cd ngx_brotli \
+    && test "$(git rev-parse HEAD)" = "25f86f0bac1101b6512135eac5f93c49c63609e3" \
+    && git submodule update --init \
+    && cd ..
+
+RUN git clone --branch 2.5.6 --depth=1 https://github.com/nginx-modules/ngx_cache_purge.git \
+    && cd ngx_cache_purge \
+    && test "$(git rev-parse HEAD)" = "1107b8f74ac7a872c1611804ae9df0f5aa4265f9"
+
+RUN git clone --branch v0.39 --depth=1 https://github.com/openresty/headers-more-nginx-module.git \
+    && cd headers-more-nginx-module \
+    && test "$(git rev-parse HEAD)" = "2b1debde426783b8f42246149d3638644a6347cb"
+
+RUN git clone --branch v0.64 --depth=1 https://github.com/openresty/echo-nginx-module.git \
+    && cd echo-nginx-module \
+    && test "$(git rev-parse HEAD)" = "b0f344bacdcfa79ffbbcee45b6803e753c377e23"
+
+RUN git clone --branch v0.3.4 --depth=1 https://github.com/simpl/ngx_devel_kit.git \
+    && cd ngx_devel_kit \
+    && test "$(git rev-parse HEAD)" = "bd44d16302273052d6005d7bdb55f74e23813de3"
+
+RUN git clone --branch v0.33 --depth=1 https://github.com/openresty/set-misc-nginx-module.git \
+    && cd set-misc-nginx-module \
+    && test "$(git rev-parse HEAD)" = "31c4ad67bb9e392a734e4e58ea8048e24012311f"
+
+RUN git clone --branch v0.20 --depth=1 https://github.com/openresty/memc-nginx-module.git \
+    && cd memc-nginx-module \
+    && test "$(git rev-parse HEAD)" = "b889a6fc3e18b784b454e1bc74e5d0b3513a07ce"
+
+RUN git clone --branch v0.15 --depth=1 https://github.com/openresty/redis2-nginx-module.git \
+    && cd redis2-nginx-module \
+    && test "$(git rev-parse HEAD)" = "c989c829a2877132cb100f901e320921250e068d"
+
+RUN git clone --branch v0.33 --depth=1 https://github.com/openresty/srcache-nginx-module.git \
+    && cd srcache-nginx-module \
+    && test "$(git rev-parse HEAD)" = "be22ac0dcd9245aadcaca3220da96a0c1a0285a7"
+
+RUN git clone --branch 0.4.1-cmm --depth=1 https://github.com/centminmod/ngx_http_redis.git \
+    && cd ngx_http_redis \
+    && test "$(git rev-parse HEAD)" = "ae925516728e763afdb868eccddc330ceae675e4"
+
+RUN git clone --branch v0.6.4 --depth=1 https://github.com/yaoweibin/ngx_http_substitutions_filter_module.git \
+    && cd ngx_http_substitutions_filter_module \
+    && test "$(git rev-parse HEAD)" = "04dfb4c66c854a0627a5c3b940695b5fd6553b8b"
+
+RUN git clone --branch v0.2.5 --depth=1 https://github.com/vozlt/nginx-module-vts.git \
+    && cd nginx-module-vts \
+    && test "$(git rev-parse HEAD)" = "b2a036ab6c1ffd5615f9ea57d6710287590735cd"
+
+RUN git clone --branch v1.0.1 --depth=1 https://github.com/masonicboom/ipscrub.git ipscrubtmp \
+    && cd ipscrubtmp \
+    && test "$(git rev-parse HEAD)" = "8a7b94ce157c1042a66f32005b3a6f285a962ec4"
 
 RUN cd nginx \
     && patch -p1 < /usr/local/src/nginx_dynamic_tls_records.patch
