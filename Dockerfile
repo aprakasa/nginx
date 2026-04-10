@@ -7,6 +7,7 @@ RUN apk add --no-cache \
     build-base \
     git \
     curl \
+    gnupg \
     patch \
     linux-headers \
     openssl-dev \
@@ -20,6 +21,9 @@ WORKDIR /usr/local/src
 COPY patches/nginx_dynamic_tls_records.patch /usr/local/src/nginx_dynamic_tls_records.patch
 
 RUN curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz \
+    && curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz.asc -o nginx.tar.gz.asc \
+    && curl -fSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor > /usr/share/keyrings/nginx-archive-keyring.gpg \
+    && gpg --no-default-keyring --keyring /usr/share/keyrings/nginx-archive-keyring.gpg --verify nginx.tar.gz.asc nginx.tar.gz \
     && tar xzf nginx.tar.gz \
     && mv nginx-${NGINX_VERSION} nginx
 
