@@ -168,6 +168,7 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN mkdir -p /etc/nginx/conf.d \
+    && mkdir -p /etc/nginx/templates \
     && mkdir -p /docker-entrypoint.d
 
 RUN mkdir -p /var/lib/nginx/{body,fastcgi,proxy,scgi,uwsgi} \
