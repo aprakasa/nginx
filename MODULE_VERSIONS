@@ -1,0 +1,13 @@
+ngx_brotli                          v1.0.0rc   25f86f0bac1101b6512135eac5f93c49c63609e3
+ngx_cache_purge                     2.5.6      1107b8f74ac7a872c1611804ae9df0f5aa4265f9
+headers-more-nginx-module           v0.39      2b1debde426783b8f42246149d3638644a6347cb
+echo-nginx-module                   v0.64      b0f344bacdcfa79ffbbcee45b6803e753c377e23
+ngx_devel_kit                       v0.3.4     bd44d16302273052d6005d7bdb55f74e23813de3
+set-misc-nginx-module               v0.33      31c4ad67bb9e392a734e4e58ea8048e24012311f
+memc-nginx-module                   v0.20      b889a6fc3e18b784b454e1bc74e5d0b3513a07ce
+redis2-nginx-module                 v0.15      c989c829a2877132cb100f901e320921250e068d
+srcache-nginx-module                v0.33      be22ac0dcd9245aadcaca3220da96a0c1a0285a7
+ngx_http_redis                      0.4.1-cmm  ae925516728e763afdb868eccddc330ceae675e4
+ngx_http_substitutions_filter_module v0.6.4     04dfb4c66c854a0627a5c3b940695b5fd6553b8b
+nginx-module-vts                    v0.2.5     b2a036ab6c1ffd5615f9ea57d6710287590735cd
+ipscrub                             v1.0.1     8a7b94ce157c1042a66f32005b3a6f285a962ec4
