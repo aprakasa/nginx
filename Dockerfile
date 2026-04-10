@@ -154,8 +154,15 @@ LABEL org.opencontainers.image.title="nginx" \
       org.opencontainers.image.vendor="Arya Prakasa" \
       org.opencontainers.image.licenses="MIT"
 
-RUN apk add --no-cache pcre2 brotli openssl zlib libbsd tzdata \
-    && addgroup -S nginx \
+RUN apk add --no-cache \
+    pcre2 \
+    brotli \
+    openssl \
+    zlib \
+    libbsd \
+    tzdata
+
+RUN addgroup -S nginx \
     && adduser -S -D -H -G nginx -h /var/cache/nginx -s /sbin/nologin nginx
 
 COPY --from=builder /usr/local/src/nginx/objs/nginx /usr/sbin/nginx
