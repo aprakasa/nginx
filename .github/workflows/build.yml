@@ -7,6 +7,7 @@ on:
     paths:
       - 'Dockerfile'
       - 'conf/**'
+      - 'patches/**'
       - '.github/workflows/**'
   workflow_dispatch:
 
