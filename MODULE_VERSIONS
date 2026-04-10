@@ -8,6 +8,5 @@ memc-nginx-module                   v0.20      b889a6fc3e18b784b454e1bc74e5d0b35
 redis2-nginx-module                 v0.15      c989c829a2877132cb100f901e320921250e068d
 srcache-nginx-module                v0.33      be22ac0dcd9245aadcaca3220da96a0c1a0285a7
 ngx_http_redis                      0.4.1-cmm  ae925516728e763afdb868eccddc330ceae675e4
-ngx_http_substitutions_filter_module v0.6.4     04dfb4c66c854a0627a5c3b940695b5fd6553b8b
 nginx-module-vts                    v0.2.5     b2a036ab6c1ffd5615f9ea57d6710287590735cd
 ipscrub                             v1.0.1     8a7b94ce157c1042a66f32005b3a6f285a962ec4

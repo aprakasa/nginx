@@ -20,9 +20,11 @@ WORKDIR /usr/local/src
 
 COPY patches/nginx_dynamic_tls_records.patch /usr/local/src/nginx_dynamic_tls_records.patch
 
-RUN curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz \
+RUN mkdir -p /usr/share/keyrings \
+    && curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz \
     && curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz.asc -o nginx.tar.gz.asc \
     && curl -fSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor > /usr/share/keyrings/nginx-archive-keyring.gpg \
+    && curl -fSL https://nginx.org/keys/arut.key | gpg --dearmor >> /usr/share/keyrings/nginx-archive-keyring.gpg \
     && gpg --no-default-keyring --keyring /usr/share/keyrings/nginx-archive-keyring.gpg --verify nginx.tar.gz.asc nginx.tar.gz \
     && tar xzf nginx.tar.gz \
     && mv nginx-${NGINX_VERSION} nginx
@@ -68,10 +70,6 @@ RUN git clone --branch v0.33 --depth=1 https://github.com/openresty/srcache-ngin
 RUN git clone --branch 0.4.1-cmm --depth=1 https://github.com/centminmod/ngx_http_redis.git \
     && cd ngx_http_redis \
     && test "$(git rev-parse HEAD)" = "ae925516728e763afdb868eccddc330ceae675e4"
-
-RUN git clone --branch v0.6.4 --depth=1 https://github.com/yaoweibin/ngx_http_substitutions_filter_module.git \
-    && cd ngx_http_substitutions_filter_module \
-    && test "$(git rev-parse HEAD)" = "04dfb4c66c854a0627a5c3b940695b5fd6553b8b"
 
 RUN git clone --branch v0.2.5 --depth=1 https://github.com/vozlt/nginx-module-vts.git \
     && cd nginx-module-vts \
@@ -136,11 +134,10 @@ RUN cd nginx && \
         --add-module=../redis2-nginx-module \
         --add-module=../srcache-nginx-module \
         --add-module=../ngx_http_redis \
-        --add-module=../ngx_http_substitutions_filter_module \
         --add-module=../nginx-module-vts \
         --add-module=../ipscrubtmp/ipscrub \
         ${ZLIB_OPT} \
-        --with-cc-opt='-O2 -fstack-protector-strong -flto -Wno-error=date-time -Wno-cpp' \
+        --with-cc-opt='-O2 -fstack-protector-strong -flto -Wno-error -Wno-cpp' \
         --with-ld-opt='-Wl,--as-needed' \
     && make -j$(nproc) \
     && strip --strip-unneeded objs/nginx
