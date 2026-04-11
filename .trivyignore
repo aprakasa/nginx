@@ -1,0 +1,6 @@
+# Accepted vulnerability exceptions for the nginx image.
+# Each entry should have a comment explaining the justification.
+#
+# Format: CVE-ID
+# Example:
+# CVE-20XX-XXXXX  # Alpine musl — no fix available in current release
