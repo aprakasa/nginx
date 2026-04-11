@@ -214,10 +214,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Verify digest
+        run: |
+          echo "Digest: ${{ needs.push.outputs.digest }}"
+          [ -n "${{ needs.push.outputs.digest }}" ]
+
       - name: Sign image
         run: |
           DIGEST=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.push.outputs.digest }}
           cosign sign --yes "$DIGEST"
+
+      - name: Verify signature
+        run: |
+          DIGEST=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.push.outputs.digest }}
+          cosign verify "$DIGEST" \
+            --certificate-identity-regexp \
+            "https://github.com/${{ github.repository }}/" \
+            --certificate-oidc-issuer \
+            "https://token.actions.githubusercontent.com"
 
       - name: Attach SBOM
         run: |
