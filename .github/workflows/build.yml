@@ -92,10 +92,18 @@ jobs:
 
       - name: Smoke test
         run: |
-          docker run -d --name nginx-test -p 8080:80 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ci
-          sleep 3
-          curl -sf http://localhost:8080/nginx-health | grep -q "ok"
+          docker run -d --name nginx-test -p 8080:80 \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ci
+          ok=false
+          for i in $(seq 1 10); do
+            if curl -sf http://localhost:8080/nginx-health | grep -q "ok"; then
+              ok=true
+              break
+            fi
+            sleep 1
+          done
           docker rm -f nginx-test
+          [ "$ok" = "true" ]
 
   scan:
     needs: build
