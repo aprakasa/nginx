@@ -1,0 +1,5 @@
+ignored:
+  - DL3018    # Pin versions in apk add - impractical for build deps
+  - DL3003    # Use WORKDIR - not practical for git clone in builder
+  - DL4006    # Set pipefail - already using set -e
+  - SC3009    # Brace expansion - supported by BusyBox ash
