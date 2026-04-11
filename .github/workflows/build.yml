@@ -9,6 +9,8 @@ on:
       - 'conf/**'
       - 'patches/**'
       - '.github/workflows/**'
+      - 'docker-entrypoint.sh'
+      - '.hadolint.yaml'
   schedule:
     - cron: '0 6 * * 1'
   workflow_dispatch:
