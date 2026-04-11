@@ -139,7 +139,7 @@ RUN cd nginx && \
         ${ZLIB_OPT} \
         --with-cc-opt='-O2 -fstack-protector-strong -flto -Wno-error -Wno-cpp' \
         --with-ld-opt='-Wl,--as-needed' \
-    && make -j$(nproc) \
+    && make -j"$(nproc)" \
     && strip --strip-unneeded objs/nginx
 
 FROM alpine:3.23
