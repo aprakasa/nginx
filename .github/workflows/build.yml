@@ -205,9 +205,11 @@ jobs:
 
       - name: Sign image
         run: |
-          cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.push.outputs.digest }}
+          DIGEST=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.push.outputs.digest }}
+          cosign sign --yes "$DIGEST"
 
       - name: Attach SBOM
         run: |
-          syft ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.push.outputs.digest }} -o spdx-json > sbom.spdx.json
-          cosign attach sbom --sbom sbom.spdx.json ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.push.outputs.digest }}
+          DIGEST=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.push.outputs.digest }}
+          syft "$DIGEST" -o spdx-json > sbom.spdx.json
+          cosign attach sbom --sbom sbom.spdx.json "$DIGEST"
